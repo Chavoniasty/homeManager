@@ -3,7 +3,14 @@ import {Todo} from "../App.tsx";
 import axios from "axios";
 import * as mongoose from "mongoose";
 
-const AddTodo = () => {
+interface AddTodoProps{
+    rooms: string[];
+    getFromAPI: () => void;
+    currentRoom: string;
+    setCurrentRoom: (currentRoom: string) => void;
+}
+
+const AddTodo = ({rooms, getFromAPI, currentRoom, setCurrentRoom}: AddTodoProps) => {
     const [tempTodo, setTempTodo] = useState<Todo>({
         _id: new mongoose.Types.ObjectId,
         category: "",
@@ -20,6 +27,8 @@ const AddTodo = () => {
                 console.log(res);
                 // Add the new todo to the todos state with the received _id
                 setTodos([...todos, res.data]);
+                getFromAPI();
+                setCurrentRoom(tempTodo.category);
             })
             .catch((err) => {
                 console.error(err);
@@ -31,8 +40,7 @@ const AddTodo = () => {
             completed: false,
         });
     }
-    // @ts-ignore
-    // @ts-ignore
+
     return <div className={"border-t border-gray-300 h-8"}>
         <form onSubmit={submitForm} className={"flex flex-col items-center w-full"}>
             <label className={"w-full flex justify-center"}>
@@ -57,9 +65,9 @@ const AddTodo = () => {
                         onChange={(e) =>
                             setTempTodo({...tempTodo, category: e.target.value})
                         }>
-                        <option value={"kitchen"}>Kitchen</option>
-                        <option value={"bedroom"}>Bedroom</option>
-                        <option value={"toilet"}>Toilet</option>
+                        {rooms.map((room)=>(
+                                <option key={room} value={room}>{room}</option>
+                        ))}
                     </select>
                 </label>
                 <input

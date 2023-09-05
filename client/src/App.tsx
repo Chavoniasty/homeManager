@@ -3,6 +3,7 @@ import axios from "axios";
 import * as mongoose from "mongoose";
 import TodoDiv from "./components/Todo-div.tsx";
 import AddTodo from "./components/AddTodo.tsx"
+import Navbar from "./components/Navbar.tsx";
 
 export interface Todo {
     _id: mongoose.Types.ObjectId,
@@ -13,37 +14,46 @@ export interface Todo {
 
 function App() {
     const [todo, setTodo] = useState<any[]>([]);
-    const [currentRoom, setCurrentRoom] = useState<string>('kitchen');
+    const [rooms, setRooms] = useState<string[]>([]);
+    const [currentRoom, setCurrentRoom] = useState<string>(rooms[0]);
 
-    useEffect(() => {
+    function getFromAPI() {
         axios.get('http://localhost:3000/api/todos')
             .then(res => {
+                const fetchedRooms: string[] = Array.from(new Set(res.data.map((todo: any) => todo.category.toString())));
                 setTodo(res.data)
+                if (fetchedRooms) {
+                    const newRooms = fetchedRooms.filter((room: string) => !rooms.includes(room));
+                    setRooms([...rooms, ...newRooms]);
+                    setCurrentRoom(rooms[0])
+                }
             })
             .catch(err => {
-                console.error(err)
-            })
-    },);
+                console.error(err);
+            });
+    }
+
+    const addNewRoom = (newRoom): void => {
+        if (newRoom) {
+            setRooms([...rooms, newRoom.toString().toLowerCase()]);
+            setCurrentRoom(newRoom);
+        }
+    }
+
+    useEffect(() => {
+        getFromAPI();
+    }, []);
+
 
     return (
         <div className="flex flex-col justify-between w-full h-full">
             <div className="w-full text-center border-b border-gray-300 h-12">
-                <ul className="flex flex-row justify-around list-none h-full">
-                    <li className={currentRoom === 'kitchen' ? "flex items-center justify-center border-blue-800 text-blue-800 border-b w-1/3" : "w-1/3 flex items-center justify-center"}>
-                        <button className={"w-full h-full"} onClick={() => setCurrentRoom('kitchen')}>Kitchen</button>
-                    </li>
-                    <li className={currentRoom === 'bedroom' ? "flex items-center justify-center border-blue-800 text-blue-800 border-b w-1/3" : "w-1/3 flex items-center justify-center"}>
-                        <button className={"w-full h-full"} onClick={() => setCurrentRoom('bedroom')}>Bedroom</button>
-                    </li>
-                    <li className={currentRoom === 'toilet' ? "flex items-center justify-center border-blue-800 text-blue-800 border-b w-1/3" : "w-1/3 flex items-center justify-center"}>
-                        <button className={"w-full h-full"} onClick={() => setCurrentRoom('toilet')}>Toilet</button>
-                    </li>
-                </ul>
+               <Navbar rooms={rooms} currentRoom={currentRoom} addNewRoom={addNewRoom} setCurrentRoom={setCurrentRoom}/>
             </div>
             <div className={"h-auto"}>
                 <TodoDiv todos={todo} currentRoom={currentRoom}/>
             </div>
-            <AddTodo/>
+            <AddTodo rooms={rooms} getFromAPI={getFromAPI} currentRoom={currentRoom} setCurrentRoom={setCurrentRoom}/>
         </div>
     )
 }
