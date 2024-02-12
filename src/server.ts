@@ -5,16 +5,16 @@ import todoRoutes from "./routes/todo-routes";
 
 const app = express();
 const port = 3000;
-const allowedOrigins = ['http://localhost:5173/'];
+const allowedOrigins = ['http://localhost:5173'];
 const options: cors.CorsOptions = {
-    origin: '*'
+    origin: allowedOrigins
 }
 
 app.use(cors(options));
 app.use(express.json());
 
 // @ts-ignore
-mongoose.connect("mongodb://127.0.0.1:27017/homeMangerDB")
+mongoose.connect("mongodb://127.0.0.1:27017/homemangerDB")
     .then(() =>
         console.log("Connected to database")
     )
@@ -33,6 +33,5 @@ mongoose.connection.on("disconnected", () => {
 app.use('/api', todoRoutes)
 
 app.listen(port, (): void => {
-    console.log(`App working on port ${port}`)
+    console.log(`App working on port ${port} essa`)
 })
-
