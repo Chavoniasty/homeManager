@@ -5,7 +5,6 @@ import Bottombar from "./components/Bottombar";
 import Title from "./components/Title";
 import * as mongoose from "mongoose";
 
-
 export interface Todo {
   _id: mongoose.Types.ObjectId,
   category: string,
@@ -49,15 +48,12 @@ function App() {
     }
   };
 
-
-
   useEffect(() => {
-
     fetchAPI();
   }, []);
 
   return (
-    <div className="flex flex-col w-screen h-screen font-nunito bg-slate-200">
+    <div className="flex flex-col w-screen h-screen font-nunito">
       <Title />
       <Todos todos={todo} fetchAPI={fetchAPI} selectedRoom={selectedRoom} />
       <Bottombar todos={todo} rooms={rooms} fetchAPI={fetchAPI} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />

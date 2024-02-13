@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -9,14 +9,11 @@ interface NavbarProps {
     setSelectedRoom: (selectedRoom: string) => void;
 }
 
-
 function Navbar({ rooms, selectedRoom, addNewRoom, setSelectedRoom }: NavbarProps) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [newRoom, setNewRoom] = useState<string>("");
-
-
 
     const submitNewRoom = () => {
         addNewRoom(newRoom);

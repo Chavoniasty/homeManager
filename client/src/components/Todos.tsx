@@ -8,7 +8,6 @@ interface Todos {
 }
 
 function Todos({ todos, selectedRoom, fetchAPI }: Todos) {
-
     const changeTodoStatus = async (id: mogoose.Types.ObjectId, completed: boolean) => {
         try {
             const response = await fetch('http://localhost:3000/api/todos', {
@@ -52,7 +51,7 @@ function Todos({ todos, selectedRoom, fetchAPI }: Todos) {
                             return (
                                 <li key={todo._id.toString()} className="my-2 p-4 border-2 border-blue-400 bg-blue-100 w-full flex flex-row items-end justify-around rounded-md shadow-xl">
                                     <h1 className="w-3/4 flex flex-row items-center text-md">{todo.title}</h1>
-                                    <div className="flex flex-row items-center justify-around w-1/4">
+                                    <div className="flex flex-row items-center justify-around w-1/4 lg:justify-end lg:gap-10 ">
                                         <button onClick={() => changeTodoStatus(todo._id, true)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -70,7 +69,7 @@ function Todos({ todos, selectedRoom, fetchAPI }: Todos) {
                             return (
                                 <li key={todo._id.toString()} className="my-2 p-4 border-2 border-green-400 bg-green-100 w-full flex flex-row items-end justify-around rounded-md shadow-xl">
                                     <h1 className="w-3/4 flex flex-row items-center text-md line-through">{todo.title} {todo.completed}</h1>
-                                    <div className="flex flex-row items-center justify-around w-1/4">
+                                    <div className="flex flex-row items-center justify-around w-1/4 lg:justify-end lg:gap-10">
                                         <button onClick={() => changeTodoStatus(todo._id, false)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
