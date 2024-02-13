@@ -44,7 +44,7 @@ function Todos({ todos, selectedRoom, fetchAPI }: Todos) {
     }
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center max-w-2/3 overflow-auto pt-2">
+        <div className="w-full h-full flex flex-col items-center justify-center max-w-2/3 max-h-2/3 overflow-y-auto">
             <ul className="my-2 w-full p-4">
                 {todos.map((todo) => {
                     if (todo.category === selectedRoom) {

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar"
 import Todos from "./components/Todos";
-import AddTodo from "./components/AddTodo";
+import Bottombar from "./components/Bottombar";
+import Title from "./components/Title";
 import * as mongoose from "mongoose";
+
 
 export interface Todo {
   _id: mongoose.Types.ObjectId,
@@ -47,15 +49,19 @@ function App() {
     }
   };
 
+
+
   useEffect(() => {
+
     fetchAPI();
   }, []);
 
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <Navbar rooms={rooms} selectedRoom={selectedRoom} addNewRoom={addNewRoom} setSelectedRoom={setSelectedRoom} />
+    <div className="flex flex-col w-screen h-screen font-nunito bg-slate-200">
+      <Title />
       <Todos todos={todo} fetchAPI={fetchAPI} selectedRoom={selectedRoom} />
-      <AddTodo rooms={rooms} fetchAPI={fetchAPI} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
+      <Bottombar todos={todo} rooms={rooms} fetchAPI={fetchAPI} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
+      <Navbar rooms={rooms} selectedRoom={selectedRoom} addNewRoom={addNewRoom} setSelectedRoom={setSelectedRoom} />
     </div>
   )
 }

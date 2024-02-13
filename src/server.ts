@@ -33,5 +33,5 @@ mongoose.connection.on("disconnected", () => {
 app.use('/api', todoRoutes)
 
 app.listen(port, (): void => {
-    console.log(`App working on port ${port} essa`)
+    console.log(`App working on port ${port}`)
 })
