@@ -37,6 +37,9 @@ function App() {
         if (fetchedRooms) {
           const newRooms = fetchedRooms.filter((room: string) => !rooms.includes(room));
           setRooms([...rooms, ...newRooms]);
+          if (!selectedRoom) {
+            setSelectedRoom(fetchedRooms[0]);
+          }
         }
       }
     } catch (error) {
@@ -51,7 +54,7 @@ function App() {
   return (
     <div className="flex flex-col w-screen h-screen">
       <Navbar rooms={rooms} selectedRoom={selectedRoom} addNewRoom={addNewRoom} setSelectedRoom={setSelectedRoom} />
-      <Todos todos={todo} selectedRoom={selectedRoom} />
+      <Todos todos={todo} fetchAPI={fetchAPI} selectedRoom={selectedRoom} />
       <AddTodo rooms={rooms} fetchAPI={fetchAPI} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
     </div>
   )

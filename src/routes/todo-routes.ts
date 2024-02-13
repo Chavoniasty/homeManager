@@ -34,8 +34,29 @@ TodoRoutes.post('/todos', async (req, res): Promise<void> => {
 });
 
 TodoRoutes.put('/todos', async (req, res): Promise<void> => {
-
+    try {
+        const { _id, completed } = req.body;
+        if (_id) {
+            const updatedTodo = await TodoModel.findByIdAndUpdate(_id, { completed }, { new: completed });
+            res.status(200).json(updatedTodo);
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Server error' });
+    }
 })
 
+TodoRoutes.delete('/todos', async (req, res): Promise<void> => {
+    try {
+        const { _id } = req.body;
+        if (_id) {
+            const deletedTodo = await TodoModel.findByIdAndDelete(_id);
+            res.status(200).json(deletedTodo);
+        }
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
 
 export default TodoRoutes;
